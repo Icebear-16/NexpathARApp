@@ -1,4 +1,4 @@
-name: Build iOS for TestFlight
+name: Build iOS for TestFlight and Sideloadly
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build Unity iOS & Xcode Archive
+    name: Build Unity iOS & IPA
     runs-on: macos-14
     timeout-minutes: 60
 
@@ -41,7 +41,7 @@ jobs:
           unityVersion: 6000.6.5f1
           buildsPath: build
 
-      - name: Compile & Create Xcode Archive (.xcarchive)
+      - name: Compile Xcode Archive & Package IPA
         run: |
           echo "Building Xcode Archive..."
           cd build/iOS
@@ -53,10 +53,23 @@ jobs:
                      CODE_SIGNING_ALLOWED=NO \
                      CODE_SIGNING_REQUIRED=NO \
                      archive
-          echo "Zipping xcarchive for distribution..."
+
+          echo "Packaging IPA for Sideloadly..."
+          mkdir -p Payload
+          cp -r NexpathARApp.xcarchive/Products/Applications/*.app Payload/
+          zip -r -y -q NexpathARApp.ipa Payload
+
+          echo "Zipping xcarchive for TestFlight..."
           zip -r -y -q NexpathARApp.xcarchive.zip NexpathARApp.xcarchive
 
-      - name: Upload .xcarchive Artifact
+      - name: Upload Sideloadly IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NexpathARApp-IPA-Sideloadly
+          path: build/iOS/NexpathARApp.ipa
+          retention-days: 14
+
+      - name: Upload Xcode Archive Artifact
         uses: actions/upload-artifact@v4
         with:
           name: NexpathARApp-xcarchive

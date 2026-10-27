@@ -1,0 +1,376 @@
+================================================================================
+NEXPATH AR NAVIGATION SYSTEM — COMPREHENSIVE ARCHITECTURE & ENGINEERING BLUEPRINT
+================================================================================
+
+This document provides a complete, end-to-end technical rundown of the Nexpath AR
+Navigation project. It is authored for software engineers, technical artists, AR
+developers, and stakeholders who were not part of the initial development cycle.
+It details not only what each component does, but why it was designed this way,
+how the subsystems interact under the hood, and how to maintain or extend the codebase.
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1. Executive Summary & Project Purpose
+2. Technical Stack & Technology Selection Rationale
+3. High-Level System Architecture & End-to-End Data Flow
+4. Subsystem Deep Dives with Technical Explanations
+   4.1 AR Localization & Multi-Area Management (LocalizationManager.cs)
+   4.2 The Topological Graph Architecture (Nodes.cs, Edges.cs, GraphDatabase.cs)
+   4.3 Shortest-Path Computation Engine (DijkstraEngine.cs)
+   4.4 Real-Time Live Navigation Execution (NavigationManager.cs)
+   4.5 In-World AR Visual Guidance System (PathVisualManager.cs & DestinationWaypointMarker.cs)
+   4.6 Offline Embedded Database & Native SQLite Layer (DatabaseManager.cs, DbQueries.cs, DbSeeder.cs, SqliteNative.cs)
+   4.7 User Interface & Mobile HUD Controller (AppUIController.cs)
+   4.8 Custom Unity Editor Tooling & Automation (NavGraphEditorWindow.cs)
+5. Directory Structure & Asset Inventory
+6. Complete Runtime Execution Lifecycle Walkthrough
+7. Engineering Pitfalls, Root-Cause Post-Mortems & Solutions
+8. Developer Maintenance Cheat Sheet
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY & PROJECT PURPOSE
+--------------------------------------------------------------------------------
+
+1.1 THE PROBLEM: INDOOR NAVIGATION & GPS DENIAL
+Standard smartphone navigation systems rely almost exclusively on Global Navigation
+Satellite Systems (GNSS: GPS, GLONASS, Galileo, BeiDou). While exceptionally accurate
+in open outdoor environments, satellite radio signals cannot penetrate modern
+architectural reinforced concrete, steel girders, and tinted low-E glass. Inside
+multi-story buildings, hospitals, university campuses, and transportation terminals,
+GPS positioning degrades to dozens of meters of error or fails entirely. 
+
+Furthermore, standard 2D mapping tools cannot address vertical elevation changes
+(staircases, elevators, floor transitions) or distinguish between overlapping floors.
+Visitors and students experience spatial disorientation when attempting to locate
+specific lecture halls, faculty offices, and specialized laboratories across complex,
+interconnected wings.
+
+1.2 THE SOLUTION: AUGMENTED REALITY + SPATIAL GRAPH TOPOLOGY
+Nexpath AR solves this problem by combining two complementary paradigms:
+1. Photogrammetric Spatial Localization: Utilizing high-precision 3D scans of the
+   physical building via PTC Vuforia Engine Area Targets. The mobile device camera
+   matches physical visual landmarks (walls, doors, signage, structural pillars)
+   to register the user's millimeter-accurate 6-Degrees-of-Freedom (6-DoF) pose in
+   the building without external hardware beacons or Wi-Fi fingerprinting.
+2. Topological Graph Pathfinding: A pre-authored mathematical graph mapping corridors,
+   doorways, and staircases. Dijkstra's shortest-path algorithm resolves the optimal
+   path from the user's localized position to their chosen destination.
+3. In-World Augmented Reality Visuals: Conformal AR guidance elements (animated
+   directional chevron arrows, solid raycasted beams, floating 3D destination pins,
+   and billboarded room text) render directly over the real world via the smartphone
+   camera display, guiding the user turn-by-turn.
+4. Completely Offline Operation: All databases, search algorithms, spatial meshes,
+   and navigation graphs reside directly on the device. The app requires zero
+   internet access to function.
+
+--------------------------------------------------------------------------------
+2. TECHNICAL STACK & TECHNOLOGY SELECTION RATIONALE
+--------------------------------------------------------------------------------
+
+- Game Engine: Unity Editor 6000.6.5f1 (Unity 6)
+  Chosen for its robust mobile rendering pipeline, mature Android build toolchain,
+  rapid C# iteration, and deep integration with AR SDKs.
+
+- AR Framework: PTC Vuforia Engine (Area Targets Multi-Dataset)
+  Selected over standard plane-detection ARCore/ARKit because Area Targets anchor
+  to real-world 3D scanned point-cloud meshes of physical spaces, eliminating drift
+  across hundreds of meters.
+
+- Target OS: Android API Level 26+ (Android 8.0 Oreo to Android 14+)
+  Target platform for user deployment. Configured with portrait orientation for
+  natural single-handed mobile navigation.
+
+- Scripting Backend: IL2CPP (ARM64 Architecture)
+  Compiles C# Intermediate Language (IL) into native C++ machine code before
+  compiling Android binaries. Provides maximum computational speed for Dijkstra
+  pathfinding and matrix transformations.
+
+- Database Engine: Embedded SQLite (Native C P/Invoke: sqlite3)
+  Provides high-speed relational SQL querying (instant LIKE text search, category
+  filtering) without requiring an active network server or heavy third-party ORMs.
+
+- UI System: Unity uGUI + TextMeshPro (1080x1920 Canvas Scaler)
+  TextMeshPro provides crisp Signed Distance Field (SDF) font rendering in both
+  2D screen space and 3D world space billboards.
+
+- Math & Curves: Catmull-Rom Spline Interpolation
+  Smooths raw, angular graph segments into curved, natural human walking paths.
+
+--------------------------------------------------------------------------------
+3. HIGH-LEVEL SYSTEM ARCHITECTURE & END-TO-END DATA FLOW
+--------------------------------------------------------------------------------
+
+Data flows across five decoupled subsystems:
+1. AR Perception Layer (Vuforia Engine):
+   Captures physical camera feed -> matches Area Target descriptors (AT_01 to AT_04) ->
+   filters for TRACKED + NORMAL status -> dispatches to LocalizationManager.
+2. Data & Persistence Layer:
+   Holds DuplexGraph.asset (38 nodes, 138 directed edges) as a compiled asset.
+   DatabaseManager manages SQLite database (nexpath.db) synced from DbQueries.
+3. Navigation Core:
+   LocalizationManager triggers OnAnchorChanged. NavigationManager snaps camera to
+   nearest node. DijkstraEngine computes shortest route through DuplexGraph.
+4. Visual Engine:
+   PathVisualManager elevates vertices +8cm above floor, smooths corners via Catmull-Rom
+   splines, scrolls UV chevron textures forward along the floor, and spawns the 3D
+   destination waypoint marker.
+5. User Interface (HUD):
+   AppUIController handles search input, category filters, path style toggles,
+   real-time distance display, tips modals, and destination arrival popups.
+
+--------------------------------------------------------------------------------
+4. SUBSYSTEM DEEP DIVES WITH TECHNICAL EXPLANATIONS
+--------------------------------------------------------------------------------
+
+4.1 AR LOCALIZATION & MULTI-AREA MANAGEMENT (LocalizationManager.cs)
+- Multi-Area Partitioning:
+  Because a single scan of an entire building exceeds mobile memory limits, the
+  building is divided into 4 Area Targets:
+  1. Nodes_AT_01: Ground floor main corridor & offices (Rooms 100-109).
+  2. Nodes_AT_02: Central staircase core connecting Floor 1 and Floor 2.
+  3. Nodes_AT_03: Upper floor North Wing (Rooms 206, 207, 208).
+  4. Nodes_AT_04: Upper floor South Wing (Rooms 200, 202, 205).
+
+- Tracking Quality Filtering & 1-Second Hysteresis:
+  In doorway zones between areas, Vuforia can see features from both targets, causing
+  rapid origin-switching (anchor thrashing). LocalizationManager solves this:
+  - Strict Quality Filter: Rejects EXTENDED_TRACKED (IMU drift). Only accepts
+    Status.TRACKED with StatusInfo.NORMAL.
+  - 1.0-Second Hysteresis: Enforces a minimum 1.0 second delay between anchor switches,
+    completely stabilizing the coordinate frame at transition doorways.
+  - Transition Nodes: Gateway nodes (e.g. L1_AT01_EXIT <-> L1_AT02_ENTRY) link the
+    sub-graphs across area boundaries.
+
+4.2 THE TOPOLOGICAL GRAPH ARCHITECTURE (Nodes.cs, Edges.cs, GraphDatabase.cs)
+- Why Graph instead of NavMesh:
+  NavMesh requires continuous 3D polygon colliders throughout the building (heavy mobile
+  RAM overhead) and struggles to stitch across multi-target AR coordinate frame shifts.
+  Graphs are lightweight, deterministic, execute in < 1ms, and support stair penalties.
+
+- Node Structure (Nodes.cs):
+  Contains Id (e.g. "L1_R105"), Position (Vector3 in meters), Floor (int: 1 or 2),
+  AuthoritativeArea ("AT_01" to "AT_04"), and IsTransition (bool).
+
+- Edge Structure (Edges.cs):
+  Contains From and To node IDs, Cost (Euclidean distance in meters), IsStairs (bool),
+  IsElevator (bool), and Enabled (bool for dynamic corridor closures).
+
+- Graph Database Asset (GraphDatabase.cs / DuplexGraph.asset):
+  Serialized ScriptableObject holding 38 nodes and 138 directed edges (69 pairs).
+  Embedded directly into the application build for instant availability on startup.
+
+4.3 SHORTEST-PATH COMPUTATION ENGINE (DijkstraEngine.cs)
+- Algorithm Mechanics:
+  1. Sets all node tentative distances to infinity, start node to 0.
+  2. Iteratively selects unvisited node with lowest accumulated distance.
+  3. Relaxes outgoing edges: skips disabled edges (!e.Enabled) and skips stairs
+     if accessibility mode is active (!allowStairs).
+  4. If alt = dist[u] + e.Cost < dist[v], updates dist[v] and sets prev[v] = u.
+  5. Backtracks from destination node through predecessor dictionary to reconstruct route.
+  6. Translates node IDs into world Vector3 coordinates via ToWorldPath().
+
+4.4 REAL-TIME LIVE NAVIGATION EXECUTION (NavigationManager.cs)
+- Runs at 10 Hz (every 0.1s) for mobile battery efficiency.
+- Dynamic Leading Vertex:
+  Anchors CurrentWorldPath[0] continuously to (camPos.x, floorY, camPos.z). The path
+  streams smoothly directly from beneath the user's feet as they walk.
+- Waypoint Popping (1.2m Threshold):
+  When the user comes within 1.2m of the next waypoint, it is popped from the list.
+  The line shortens, guiding them to the next corner.
+- Off-Track Auto-Recalculation (6.0m Threshold):
+  If the user walks down the wrong hallway and strays > 6.0m from the planned route,
+  the system logs "[Nav] Off-track detected" and recalculates from their new position.
+
+4.5 IN-WORLD AR VISUAL GUIDANCE SYSTEM (PathVisualManager.cs & DestinationWaypointMarker.cs)
+- Dual Path Rendering Modes:
+  1. Animated Directional Arrows: 0.40m wide, LineTextureMode.Tile, scrolling UV
+     offset horizontally at -1.3 units/sec to animate chevrons forward on the floor.
+  2. Classic Solid Raycast Line: 0.20m wide, LineTextureMode.Stretch, solid cyan beam.
+- Catmull-Rom Spline Curve Smoothing:
+  Subdivides raw 90-degree corridor segments into 8 curve samples, creating natural,
+  fluid walking trajectories.
+- Floor Elevation Offset (+0.08m):
+  Elevates all line vertices 8cm above floor coordinates to completely eliminate
+  Z-fighting visual flickering with scanned floor meshes.
+- Procedural 3D Destination Waypoint Marker:
+  Procedurally generates a glowing diamond mesh rotating at 60 deg/sec and bobbing
+  vertically +/- 0.15m, with an expanding ground pulse ring (0.45m to 0.65m) and
+  camera-facing TextMeshPro billboard text (BillboardText.cs).
+
+4.6 OFFLINE EMBEDDED DATABASE & NATIVE SQLITE LAYER (DatabaseManager.cs, DbQueries.cs)
+- Native C P/Invoke (SqliteNative.cs):
+  Bypasses heavy ORMs by binding directly to sqlite3 native libraries on Android
+  (libsqlite3.so) and Windows (sqlite3.dll).
+- Automatic Boot Synchronization:
+  Because Android persistentDataPath preserves files across APK updates, DatabaseManager
+  executes DbSeeder.SeedLocations() on every boot, refreshing the Location table from
+  DbQueries.StaticLocations in 2ms without requiring app data wipes.
+- Dual Fallback Architecture:
+  If native SQLite libraries are unavailable on a specific device, DbQueries seamlessly
+  queries StaticLocations and DbSeedData in-memory without throwing exceptions.
+
+4.7 USER INTERFACE & MOBILE HUD CONTROLLER (AppUIController.cs)
+- Canvas configured for 1080x1920 portrait mobile usage.
+- Search Drawer: Debounced typing queries SQLite (LIKE '%query%'), displaying matches
+  in a scrollable list (SearchResultItem.prefab).
+- Filter Pills: Instant toggle buttons for Office, Classroom, Laboratory.
+- Tips Modal: Purple floating action button opening user guidance on lighting, scanning,
+  and stair safety.
+- Distance Display: Updates every 0.4s summing remaining path lengths.
+- Destination Arrival Popup: Automatically triggers when user is within 1.8m of arrival.
+
+4.8 CUSTOM UNITY EDITOR TOOLING & AUTOMATION (NavGraphEditorWindow.cs)
+- Accessible in Unity via ARNav > Navigation Graph Editor.
+- SceneView Gizmos: Renders color-coded nodes and edge connections directly in Scene view.
+- Auto Node Registration: Selecting an empty scene GameObject automatically computes
+  coordinates, infers floor/area from hierarchy, and saves it into DuplexGraph.asset.
+- Physical 3D Distance Calculation: Computes exact Euclidean distance when connecting nodes.
+- In-Editor Route Simulation: Tests Dijkstra routes with gold visual highlights in the Editor.
+- 1-Click SQLite Export: Writes DuplexGraph.asset directly into SQLite database tables.
+
+--------------------------------------------------------------------------------
+5. DIRECTORY STRUCTURE & ASSET INVENTORY
+--------------------------------------------------------------------------------
+
+Assets/
+  ARNav_Phase1/
+    Data/
+      DuplexGraph.asset                 (Serialized ScriptableObject: 38 nodes, 138 edges)
+    Editor/
+      CreateEditorBuildingMeshes.cs     (Reference geometry generator)
+      CreateRoomLabels.cs               (Procedural 3D room label generator)
+      NavGraphEditorWindow.cs           (Custom Unity Editor window for graph authoring)
+      SetupSearchDropdownAndLabels.cs   (UI dropdown builder utility)
+      SetupTipsAndArrivalUI.cs          (UI tips and arrival banner builder utility)
+    Materials/
+      LineRenderMat_Arrows.mat          (Material with scrolling chevron texture)
+      LineRenderMat_Classic.mat         (Solid emissive cyan line material)
+    Prefabs/
+      SearchResultItem.prefab           (Dropdown result row template)
+    Scripts/
+      Core/
+        AppManager.cs                   (Root application coordinator)
+        BillboardText.cs                (TextMeshPro camera-facing billboarding)
+        DatabaseManager.cs              (Native SQLite lifecycle and connection pool)
+        DbQueries.cs                    (Search queries & StaticLocations single source)
+        DbSeedData.cs                   (Offline node coordinates fallback array)
+        DbSeeder.cs                     (SQLite seeder and location synchronizer)
+        SqliteNative.cs                 (P/Invoke C interop bindings to libsqlite3)
+      Localization/
+        LocalizationManager.cs          (Vuforia Area Target observer & hysteresis filter)
+      Navigation/
+        DijkstraEngine.cs               (Shortest-path routing engine)
+        Edges.cs                        (Edge data model & flags)
+        GraphDatabase.cs                (ScriptableObject definition & merge routines)
+        NavigationManager.cs            (Live tracking, waypoint popping & camera snapping)
+        Nodes.cs                        (Node data model & coordinates)
+      UI/
+        AppUIController.cs              (HUD manager, search drawer & modal controller)
+      Visual/
+        DestinationWaypointMarker.cs    (Procedural 3D glowing destination pin)
+        PathVisualManager.cs            (Dual-mode path visualizer & Catmull-Rom smoother)
+    Textures/
+      nav_arrow_strip.png               (Directional chevron strip texture)
+      path_toggle_icon.png              (UI icon for path style switcher)
+      tips_icon.png                     (UI icon for tips button)
+      button1.png / button2.png         (UI button background sprites)
+      CloseIcon.png / SearchIcon.png    (HUD vector sprites)
+  Scenes/
+    AR_Navigation.unity                 (Primary production scene)
+
+--------------------------------------------------------------------------------
+6. COMPLETE RUNTIME EXECUTION LIFECYCLE WALKTHROUGH
+--------------------------------------------------------------------------------
+
+1. App Cold Boot:
+   DatabaseManager (Order -100) initializes native SQLite, checks nexpath.db, and runs
+   SyncLocations() to ensure room descriptions match DbQueries.StaticLocations.
+2. Graph Load:
+   NavigationManager (Order 10) loads DuplexGraph.asset (38 nodes, 138 edges) and binds
+   to LocalizationManager events.
+3. Vuforia Localization:
+   User points phone down corridor. Vuforia matches camera frames to Nodes_AT_01 point cloud.
+   LocalizationManager confirms TRACKED + NORMAL status. NavigationManager snaps user position
+   to nearest node (e.g. L1_T1).
+4. Destination Selection:
+   User taps Search Icon, types "200", and taps "Start Navigation".
+5. Path Calculation:
+   DijkstraEngine computes shortest path:
+   L1_T1 -> L1_AT01_EXIT -> L1_AT02_ENTRY -> STAIR_L1_BOT -> STAIR_L2_MID ->
+   STAIR_L2_TOP -> L2_AT02_EXIT -> L2_AT04_ENTRY -> L2_CorC -> L2_CorD -> L2_R200.
+6. AR Rendering:
+   PathVisualManager elevates points +8cm, smooths corners with Catmull-Rom splines,
+   and streams scrolling chevron arrows along the floor. Destination marker spawns at Room 200.
+7. Active Guidance:
+   User walks toward Room 200. Path start is anchored to user's feet; waypoints pop when
+   within 1.2m; distance banner updates: "Navigating to Room 200 (18.2 m)".
+8. Arrival:
+   Remaining distance reaches <= 1.8m. AppUIController triggers arrival banner:
+   "🎯 Room 200 — Office of the HOD". User taps Finish Navigation to reset HUD.
+
+--------------------------------------------------------------------------------
+7. ENGINEERING PITFALLS, ROOT-CAUSE POST-MORTEMS & SOLUTIONS
+--------------------------------------------------------------------------------
+
+1. The Dual Source-of-Truth Problem (Runtime Graph Overwrite):
+   - Symptom: Graph connections edited in editor vanished in APK builds.
+   - Root Cause: NavigationManager.Start() called graph.LoadFromDatabase() unconditionally,
+     which loaded old fallback seed data from SQLite and wiped graph.nodes in memory.
+   - Solution: Guarded Start() to preserve compiled asset data if nodes and edges exist,
+     and implemented non-destructive merging in GraphDatabase.cs.
+
+2. Missing Node Registration in Custom Editor Tooling:
+   - Symptom: New scene GameObjects (Node_L2_AT03_EXIT) were connected by edges, but
+     Dijkstra could not find routes through them.
+   - Root Cause: Editor connected edges in graph.edges but never registered node definitions
+     in graph.nodes.
+   - Solution: Added EnsureNodeInGraph() in NavGraphEditorWindow.cs to automatically
+     register and serialize new nodes into DuplexGraph.asset upon selection.
+
+3. Android persistentDataPath Stale Room Descriptions:
+   - Symptom: Room description edits in code were ignored on devices after updating APK.
+   - Root Cause: Android preserves persistentDataPath across APK updates. DatabaseManager
+     only seeded if database file did not exist.
+   - Solution: Established DbQueries.StaticLocations as single source of truth and added
+     DbSeeder.SeedLocations() to execute on every boot to refresh Location table in 2ms.
+
+4. Overlapping Vuforia Area Target Thrashing:
+   - Symptom: Standing in doorways caused screen coordinates to flicker violently.
+   - Root Cause: Camera seeing features from two targets simultaneously flipped anchors at 60 Hz.
+   - Solution: Added TRACKED + NORMAL status filter and 1.0-second time hysteresis window
+     in LocalizationManager.cs.
+
+5. Line Renderer Z-Fighting:
+   - Symptom: Navigation floor lines flickered with black horizontal visual artifacts.
+   - Root Cause: Coplanar depth precision issues between LineRenderer and physical floor mesh.
+   - Solution: Applied a +0.08m (8cm) vertical offset to all path vertices.
+
+--------------------------------------------------------------------------------
+8. DEVELOPER MAINTENANCE CHEAT SHEET
+--------------------------------------------------------------------------------
+
+Adding a New Room to the System:
+1. Scene Placement:
+   In Hierarchy under NodesRoot, select the area (e.g. Nodes_AT_03). Create an empty
+   GameObject named Node_L2_R210 and position it in front of the room door.
+2. Graph Connection:
+   Open ARNav > Navigation Graph Editor. Select Node_L2_R210 and the nearest corridor node.
+   Click [ Connect (Bidirectional) ]. The editor will calculate physical distance,
+   register the node in DuplexGraph.asset, and save.
+3. Location Metadata:
+   In DbQueries.cs, add the room entry to StaticLocations array:
+   new LocationRow { id = 16, name = "Room 210", category = "Laboratory",
+     description = "Robotics and Embedded Systems Lab", nodeName = "L2_R210" },
+4. Database Synchronization:
+   In Navigation Graph Editor, click [ Export DuplexGraph Directly to SQLite Database ].
+   Build and run.
+
+Modifying Room Descriptions or Categories:
+1. Open DbQueries.cs.
+2. Edit the name, category, or description string in StaticLocations array.
+3. Build the project. The database will automatically synchronize on application launch.
+
+================================================================================
+Document generated for NexpathARApp — Repository Technical Documentation.
+================================================================================

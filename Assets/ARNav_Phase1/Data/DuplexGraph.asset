@@ -1,0 +1,1034 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7cdc308f965b44ebd79a7fa59e35de, type: 3}
+  m_Name: DuplexGraph
+  m_EditorClassIdentifier: Assembly-CSharp::GraphDatabase
+  nodes:
+  - Id: L1_R109
+    Position: {x: 13.1334, y: -1.5, z: -9.02426}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R107
+    Position: {x: 14.2444, y: -1.5, z: -10.27526}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R108
+    Position: {x: 17.5104, y: -1.5, z: -5.31126}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R106
+    Position: {x: 10.1124, y: -1.5, z: -16.93526}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R103
+    Position: {x: 8.3654, y: -1.5, z: -20.07626}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R104
+    Position: {x: 8.3654, y: -1.5, z: -20.07626}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R105
+    Position: {x: 8.3654, y: -1.5, z: -20.07626}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R101
+    Position: {x: 4.3094, y: -1.5, z: -22.331259}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_R100
+    Position: {x: 4.3094, y: -1.5, z: -22.331259}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_T1
+    Position: {x: 8.4134, y: -1.5, z: -15.04826}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_CorA
+    Position: {x: 11.8504, y: -1.5, z: -13.24926}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_CorB
+    Position: {x: 19.3344, y: -1.5, z: -1.40426}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_CorC
+    Position: {x: 9.9744, y: -1.5, z: -15.813259}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_CorD
+    Position: {x: 5.4644003, y: -1.5, z: -23.36326}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_CorE
+    Position: {x: 15.2154, y: -1.5, z: -16.24826}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_T2
+    Position: {x: 10.3674, y: -1.5, z: -12.410259}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_AT01_EXIT
+    Position: {x: 9.3, y: -1.5, z: -14.34226}
+    Floor: 1
+    AuthoritativeArea: AT_01
+    IsTransition: 0
+  - Id: L1_AT02_ENTRY
+    Position: {x: 8.732, y: -1.5, z: -14.176}
+    Floor: 1
+    AuthoritativeArea: AT_02
+    IsTransition: 0
+  - Id: STAIR_L1_BOT
+    Position: {x: 8.3254, y: -1.5, z: -13.91526}
+    Floor: 1
+    AuthoritativeArea: AT_02
+    IsTransition: 1
+  - Id: STAIR_L2_MID
+    Position: {x: 4.7544003, y: 0.116, z: -10.70326}
+    Floor: 1
+    AuthoritativeArea: AT_02
+    IsTransition: 1
+  - Id: STAIR_L2_TOP
+    Position: {x: 8.8364, y: 1.55, z: -12.24226}
+    Floor: 2
+    AuthoritativeArea: AT_02
+    IsTransition: 1
+  - Id: L2_AT02_EXIT
+    Position: {x: 9.173, y: 1.55, z: -12.574}
+    Floor: 2
+    AuthoritativeArea: AT_02
+    IsTransition: 0
+  - Id: L2_AT03_ENTRY
+    Position: {x: 9.81, y: 1.55, z: -12.76}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_R208
+    Position: {x: 13.3234, y: 1.65, z: -9.46026}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_R207
+    Position: {x: 17.5104, y: 1.65, z: -5.31126}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_R206
+    Position: {x: 14.2444, y: 1.65, z: -10.27526}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_R200
+    Position: {x: 4.3094, y: 1.5, z: -22.331259}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_CorA
+    Position: {x: 11.8504, y: 1.5, z: -13.24926}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_CorB
+    Position: {x: 19.3344, y: 1.65, z: -1.40426}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_T3
+    Position: {x: 10.6164, y: 1.55, z: -12.383261}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 0
+  - Id: L2_R205
+    Position: {x: 9.0544, y: 1.5, z: -18.37326}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_R202
+    Position: {x: 6.2544003, y: 1.5, z: -23.01326}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_CorC
+    Position: {x: 9.9744, y: 1.5, z: -15.813259}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_CorD
+    Position: {x: 5.4644003, y: 1.5, z: -23.36326}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_T4
+    Position: {x: 8.6954, y: 1.55, z: -14.69426}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_AT04_ENTRY
+    Position: {x: 9.45, y: 1.55, z: -13.45}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 0
+  - Id: L2_AT03_EXIT
+    Position: {x: 11.46, y: 1.5, z: -13.91}
+    Floor: 2
+    AuthoritativeArea: AT_03
+    IsTransition: 1
+  - Id: L2_AT04_EXIT
+    Position: {x: 10.89, y: 1.5, z: -14.79}
+    Floor: 2
+    AuthoritativeArea: AT_04
+    IsTransition: 1
+  edges:
+  - From: L1_CorA
+    To: L1_CorB
+    Cost: 14.01122
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorB
+    To: L1_CorA
+    Cost: 14.01122
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_CorC
+    Cost: 3.177022
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_CorA
+    Cost: 3.177022
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_CorD
+    Cost: 8.794465
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_CorC
+    Cost: 8.794465
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_CorE
+    Cost: 4.5074635
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorE
+    To: L1_CorA
+    Cost: 4.5074635
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_CorE
+    Cost: 5.2590218
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorE
+    To: L1_CorC
+    Cost: 5.2590218
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R100
+    To: L1_CorD
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R100
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R101
+    To: L1_CorD
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R101
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_R103
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R103
+    To: L1_CorC
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R103
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R103
+    To: L1_CorD
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_R104
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R104
+    To: L1_CorC
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R104
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R104
+    To: L1_CorD
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_R105
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R105
+    To: L1_CorC
+    Cost: 4.5565395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R105
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R105
+    To: L1_CorD
+    Cost: 4.384082
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R106
+    To: L1_CorC
+    Cost: 1.1304564
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_R106
+    Cost: 1.1304564
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_T1
+    Cost: 1.7383741
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_T1
+    To: L1_CorC
+    Cost: 1.7383741
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_T2
+    Cost: 1.703881
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_T2
+    To: L1_CorA
+    Cost: 1.703881
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R109
+    To: L1_CorA
+    Cost: 4.4155087
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_R109
+    Cost: 4.4155087
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R107
+    To: L1_CorA
+    Cost: 3.8178413
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_R107
+    Cost: 3.8178413
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorB
+    To: L1_R108
+    Cost: 4.3118005
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R108
+    To: L1_CorB
+    Cost: 4.3118005
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_R108
+    Cost: 9.7492285
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R108
+    To: L1_CorA
+    Cost: 9.7492285
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_T1
+    Cost: 1.1333559
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_T1
+    To: L1_AT01_EXIT
+    Cost: 1.1333559
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_T2
+    Cost: 2.2072542
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_T2
+    To: L1_AT01_EXIT
+    Cost: 2.2072542
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_AT02_ENTRY
+    Cost: 0.5918331
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT02_ENTRY
+    To: L1_AT01_EXIT
+    Cost: 0.5918331
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT02_ENTRY
+    To: STAIR_L1_BOT
+    Cost: 0.48302025
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L1_BOT
+    To: L1_AT02_ENTRY
+    Cost: 0.48302025
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L1_BOT
+    To: STAIR_L2_MID
+    Cost: 5.0675874
+    IsStairs: 1
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L2_MID
+    To: STAIR_L1_BOT
+    Cost: 5.0675874
+    IsStairs: 1
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L2_MID
+    To: STAIR_L2_TOP
+    Cost: 4.5921235
+    IsStairs: 1
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L2_TOP
+    To: STAIR_L2_MID
+    Cost: 4.5921235
+    IsStairs: 1
+    IsElevator: 0
+    Enabled: 1
+  - From: STAIR_L2_TOP
+    To: L2_AT02_EXIT
+    Cost: 0.47260073
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT02_EXIT
+    To: STAIR_L2_TOP
+    Cost: 0.47260073
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT02_EXIT
+    To: L2_AT03_ENTRY
+    Cost: 0.6636001
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_ENTRY
+    To: L2_AT02_EXIT
+    Cost: 0.6636001
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_ENTRY
+    To: L2_T3
+    Cost: 0.8900632
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T3
+    To: L2_AT03_ENTRY
+    Cost: 0.8900632
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T3
+    To: L2_CorA
+    Cost: 1.5083803
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorA
+    To: L2_T3
+    Cost: 1.5083803
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorA
+    To: L2_CorB
+    Cost: 14.012023
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorB
+    To: L2_CorA
+    Cost: 14.012023
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorA
+    To: L2_R206
+    Cost: 3.820787
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R206
+    To: L2_CorA
+    Cost: 3.820787
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorA
+    To: L2_R208
+    Cost: 4.068015
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R208
+    To: L2_CorA
+    Cost: 4.068015
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorB
+    To: L2_R207
+    Cost: 4.3118005
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R207
+    To: L2_CorB
+    Cost: 4.3118005
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorB
+    To: L2_R208
+    Cost: 10.051432
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R208
+    To: L2_CorB
+    Cost: 10.051432
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_ENTRY
+    To: L2_AT04_ENTRY
+    Cost: 0.7782672
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_ENTRY
+    To: L2_AT03_ENTRY
+    Cost: 0.7782672
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T3
+    To: L2_AT04_ENTRY
+    Cost: 1.5806395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_ENTRY
+    To: L2_T3
+    Cost: 1.5806395
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_ENTRY
+    To: L2_T4
+    Cost: 1.4551986
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T4
+    To: L2_AT04_ENTRY
+    Cost: 1.4551986
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T4
+    To: L2_CorC
+    Cost: 1.7001468
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorC
+    To: L2_T4
+    Cost: 1.7001468
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorC
+    To: L2_CorD
+    Cost: 8.794465
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorD
+    To: L2_CorC
+    Cost: 8.794465
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorC
+    To: L2_R205
+    Cost: 2.7202952
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R205
+    To: L2_CorC
+    Cost: 2.7202952
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorD
+    To: L2_R200
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R200
+    To: L2_CorD
+    Cost: 1.5488875
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorD
+    To: L2_R202
+    Cost: 0.8640603
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R202
+    To: L2_CorD
+    Cost: 0.8640603
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_EXIT
+    To: L2_AT04_EXIT
+    Cost: 1.048475
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_EXIT
+    To: L2_AT03_EXIT
+    Cost: 1.048475
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorA
+    To: L2_AT03_EXIT
+    Cost: 0.7674564
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_EXIT
+    To: L2_CorA
+    Cost: 0.7674564
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorC
+    To: L2_AT04_EXIT
+    Cost: 1.3730929
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_EXIT
+    To: L2_CorC
+    Cost: 1.3730929
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_ENTRY
+    To: L2_AT04_EXIT
+    Cost: 1.9676641
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_EXIT
+    To: L2_AT04_ENTRY
+    Cost: 1.9676641
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_ENTRY
+    To: L2_AT03_EXIT
+    Cost: 2.0118394
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_EXIT
+    To: L2_AT03_ENTRY
+    Cost: 2.0118394
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T3
+    To: L2_AT03_EXIT
+    Cost: 1.7450197
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT03_EXIT
+    To: L2_T3
+    Cost: 1.7450197
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_T4
+    To: L2_AT04_EXIT
+    Cost: 2.1972563
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_AT04_EXIT
+    To: L2_T4
+    Cost: 2.1972563
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R208
+    To: L2_R207
+    Cost: 5.8945045
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R207
+    To: L2_R208
+    Cost: 5.8945045
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R207
+    To: L2_R206
+    Cost: 5.942058
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R206
+    To: L2_R207
+    Cost: 5.942058
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R208
+    To: L2_R206
+    Cost: 1.2298236
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R206
+    To: L2_R208
+    Cost: 1.2298236
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R206
+    To: L2_CorB
+    Cost: 10.227549
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorB
+    To: L2_R206
+    Cost: 10.227549
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R205
+    To: L2_R202
+    Cost: 5.419372
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R202
+    To: L2_R205
+    Cost: 5.419372
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R205
+    To: L2_CorD
+    Cost: 6.1472106
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorD
+    To: L2_R205
+    Cost: 6.1472106
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_R202
+    To: L2_CorC
+    Cost: 8.104221
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L2_CorC
+    To: L2_R202
+    Cost: 8.104221
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R109
+    To: L1_R107
+    Cost: 1.6731178
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R107
+    To: L1_R109
+    Cost: 1.6731178
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R109
+    To: L1_R108
+    Cost: 5.73973
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R108
+    To: L1_R109
+    Cost: 5.73973
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R109
+    To: L1_CorB
+    Cost: 9.824296
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorB
+    To: L1_R109
+    Cost: 9.824296
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R107
+    To: L1_CorB
+    Cost: 10.227549
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorB
+    To: L1_R107
+    Cost: 10.227549
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R107
+    To: L1_R108
+    Cost: 5.942058
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R108
+    To: L1_R107
+    Cost: 5.942058
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorA
+    To: L1_AT01_EXIT
+    Cost: 2.7747412
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_CorA
+    Cost: 2.7747412
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorC
+    To: L1_AT01_EXIT
+    Cost: 1.6182249
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_CorC
+    Cost: 1.6182249
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorE
+    To: L1_AT01_EXIT
+    Cost: 6.2148843
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_AT01_EXIT
+    To: L1_CorE
+    Cost: 6.2148843
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R106
+    To: L1_R103
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R103
+    To: L1_R106
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R106
+    To: L1_R104
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R104
+    To: L1_R106
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R106
+    To: L1_R105
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R105
+    To: L1_R106
+    Cost: 3.5941455
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_R106
+    To: L1_CorD
+    Cost: 7.932407
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
+  - From: L1_CorD
+    To: L1_R106
+    Cost: 7.932407
+    IsStairs: 0
+    IsElevator: 0
+    Enabled: 1
